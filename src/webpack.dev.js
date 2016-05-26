@@ -8,13 +8,14 @@ function getLoaderExclude(path) {
     return isNpmModule & !isUxcore;
 }
 
+console.log(path.join(process.cwd(), './dist'));
 module.exports = {
     cache: false,
     entry: {
         demo: './demo/index'
     },
     output: {
-        path: './dist',
+        path: path.join(process.cwd(), './dist'),
         filename: "[name].js",
         sourceMapFilename: "[name].js.map"
     },
@@ -51,10 +52,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-          __LOCAL__: true, // 本地环境
-          __DEV__:   true, // 日常环境
-          __PRO__:   false // 生产环境
-        }),
-        new webpack.optimize.DedupePlugin()
+            'process.env.NODE_ENV': '"development"'
+        })
     ]
 };

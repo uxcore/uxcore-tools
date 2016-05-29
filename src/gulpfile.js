@@ -39,6 +39,8 @@ gulp.task('pack_demo', function(cb) {
 });
 
 gulp.task('pack_build', function(cb) {
+    console.log(path.join(process.cwd(), './src/**/*.js'));
+    console.log(util.getFromCwd('./src/**/*.js'));
     gulp.src([path.join(process.cwd(), './src/**/*.js')])
         .pipe(babel({
             presets: ['react', 'es2015-loose', 'stage-1'],

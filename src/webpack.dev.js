@@ -8,7 +8,7 @@ function getLoaderExclude(path) {
     return isNpmModule & !isUxcore;
 }
 
-console.log(path.join(process.cwd(), './dist'));
+console.log(path.join(__dirname, '../node_modules'));
 module.exports = {
     cache: false,
     entry: {
@@ -35,16 +35,18 @@ module.exports = {
                 exclude: getLoaderExclude,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'es2015-loose', 'stage-1'],
+                    presets: ['babel-preset-react', 'babel-preset-es2015-loose', 'babel-preset-stage-1'].map(require.resolve),
                     plugins: [
-                        'add-module-exports'
-                    ]
+                        'babel-plugin-add-module-exports'
+                    ].map(require.resolve)
                 }
             }
         ]
     },
-    resolve: {
-        root: path.join(__dirname, '../')
+    resolveLoader: {
+        root: [
+            path.join(__dirname, '../node_modules')
+        ]
     },
     externals: {
         react: 'var React', // 相当于把全局的React作为模块的返回 module.exports = React;

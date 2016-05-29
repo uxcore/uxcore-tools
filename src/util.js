@@ -1,4 +1,5 @@
 var file = require('html-wiring');
+var path = require('path');
 var pkg = JSON.parse(file.readFileAsString('package.json'));
 var eslintCfg = JSON.parse(file.readFileAsString(__dirname + '/eslintrc.json'));
 
@@ -17,6 +18,11 @@ var utils = {
             }
         }
         return larger;
+    },
+    getFromCwd: function() {
+        var args = [].slice.call(arguments, 0);
+        args.unshift(process.cwd());
+        return path.join.apply(path, args);
     },
     getPkg: function() {
         return pkg;

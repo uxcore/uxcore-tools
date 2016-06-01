@@ -14,6 +14,7 @@ var lrServer = lr();
 var serveStatic = require('./serveStatic');
 var shelljs = require('shelljs');
 
+
 // gulp & gulp plugin
 var gulp = require('gulp');
 var babel = require('gulp-babel');
@@ -37,6 +38,7 @@ colors.setTheme({
 
 
 gulp.task('pack_build', function(cb) {
+    console.log(colors.info('###### pack_build start ######'))
     gulp.src([path.join(process.cwd(), './src/**/*.js')])
         .pipe(babel({
             presets: ['react', 'es2015-ie', 'stage-1'].map(function(item) {
@@ -44,11 +46,12 @@ gulp.task('pack_build', function(cb) {
             }),
             plugins: ['add-module-exports'].map(function(item) {
                 return require.resolve('babel-plugin-' + item);
-            }),
+            })
         }))
         .pipe(es3ify())
         .pipe(gulp.dest('build'))
         .on('end', function() {
+            console.log(colors.info('###### pack_build done ######'))
             cb();
         });
 });
@@ -164,13 +167,9 @@ gulp.task('server', [
         console.log(colors.info("dev server start: listening on 127.0.0.1:8001"));
         if (err) {
             console.error(err);
-        }
-        else {
-        }
+        } else {}
 
     });
-
-
     gulp.watch(path.join(process.cwd(), './src/**/*.less'), ['reload_by_demo_css']);
 
     gulp.watch(path.join(process.cwd(), './demo/**/*.less'), ['reload_by_demo_css']);
@@ -180,9 +179,8 @@ gulp.task('server', [
 gulp.task('build', ['pack_build'], function() {});
 
 gulp.task('publish', ['pack_build'], function() {
-    setTimeout(function() {
-        var questions = util.getQuestions();
-        inquirer.prompt(questions, function(answers) {
+    util.getQuestions().then(function(questions) {
+        inquirer.prompt(questions).then(function(answers) {
             var pkg = util.getPkg();
             pkg.version = answers.version;
             file.writeFileFromString(JSON.stringify(pkg, null, ' '), 'package.json');
@@ -192,6 +190,6 @@ gulp.task('publish', ['pack_build'], function() {
             spawn.sync('git', ['push', 'origin', answers.branch], {stdio: 'inherit'});
             console.log(colors.info('#### Npm Info ####'));
             spawn.sync(answers.npm, ['publish'], {stdio: 'inherit'});
-        })
-    }, 0)
+        });
+    });
 });

@@ -1,5 +1,10 @@
 # history
 
+## 0.2.1
+
+* `FIX` fix publish bug
+* `FIX` auto detect git branch & npm source
+
 ## 0.2
 
 * `CHANGED` babel-loader use `cacheDirectory`

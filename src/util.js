@@ -19,6 +19,18 @@ var utils = {
         }
         return larger;
     },
+    runCmd: function(cmd, args, fn) {
+        args = args || [];
+        var runner = require('child_process').spawn(cmd, args, {
+            // keep color
+            stdio: 'inherit',
+        });
+        runner.on('close', (code) => {
+            if (fn) {
+                fn(code);
+            }
+        });
+    },
     getFromCwd: function() {
         var args = [].slice.call(arguments, 0);
         args.unshift(process.cwd());

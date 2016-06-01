@@ -4,11 +4,10 @@ var path = require('path');
 
 function getLoaderExclude(path) {
     var isNpmModule = !!path.match(/node_modules/);
-    var isUxcore = !!path.match(/node_modules[\/\\](@ali[\/\\])?uxcore/);
-    return isNpmModule & !isUxcore;
+    // var isUxcore = !!path.match(/node_modules[\/\\](@ali[\/\\])?uxcore/);
+    return isNpmModule;
 }
 
-console.log(path.join(__dirname, '../node_modules'));
 module.exports = {
     cache: false,
     entry: {
@@ -19,15 +18,9 @@ module.exports = {
         filename: "[name].js",
         sourceMapFilename: "[name].js.map"
     },
-    devtool: '#source-map', // 这个配置要和output.sourceMapFilename一起使用
+    devtool: 'cheap-module-eval-source-map', // 这个配置要和output.sourceMapFilename一起使用
     module: {
         loaders: [
-            {
-                test: /\.js(x)*$/,
-                // uxcore以外的modules都不需要经过babel解析
-                exclude: getLoaderExclude,
-                loader: 'es3ify-loader'
-            },
             {
 
                 test: /\.js(x)*$/,
@@ -35,10 +28,15 @@ module.exports = {
                 exclude: getLoaderExclude,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['babel-preset-react', 'babel-preset-es2015-loose', 'babel-preset-stage-1'].map(require.resolve),
+                    presets: ['react', 'es2015-ie', 'stage-1'].map(function(item) {
+                        return require.resolve('babel-preset-' + item);
+                    }),
                     plugins: [
-                        'babel-plugin-add-module-exports'
-                    ].map(require.resolve)
+                        'add-module-exports'
+                    ].map(function(item) {
+                        return require.resolve('babel-plugin-' + item);
+                    }),
+                    cacheDirectory: true
                 }
             }
         ]

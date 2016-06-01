@@ -12,6 +12,7 @@ var livereload = require('connect-livereload');
 var lr = require('tiny-lr');
 var lrServer = lr();
 var serveStatic = require('./serveStatic');
+var shelljs = require('shelljs');
 
 // gulp & gulp plugin
 var gulp = require('gulp');
@@ -34,23 +35,22 @@ colors.setTheme({
     info: ['bold', 'green']
 });
 
-gulp.task('pack_demo', function(cb) {
-    
-});
 
 gulp.task('pack_build', function(cb) {
-    console.log(path.join(process.cwd(), './src/**/*.js'));
-    console.log(util.getFromCwd('./src/**/*.js'));
     gulp.src([path.join(process.cwd(), './src/**/*.js')])
         .pipe(babel({
-            presets: ['react', 'es2015-loose', 'stage-1'],
-            plugins: ['add-module-exports']
+            presets: ['react', 'es2015-ie', 'stage-1'].map(function(item) {
+                return require.resolve('babel-preset-' + item);
+            }),
+            plugins: ['add-module-exports'].map(function(item) {
+                return require.resolve('babel-plugin-' + item);
+            }),
         }))
         .pipe(es3ify())
         .pipe(gulp.dest('build'))
         .on('end', function() {
             cb();
-        })
+        });
 });
 
 gulp.task('less_demo', function(cb) {
@@ -76,7 +76,7 @@ gulp.task('lint', function(cb) {
         .pipe(eslint(eslintCfg))
         .pipe(eslint.format('table'))
         .pipe(eslint.failAfterError());
-})
+});
 
 gulp.task('reload_by_js', ['pack_demo'], function () {
     lrServer.changed({body: {files: ['.']}});
@@ -90,67 +90,84 @@ gulp.task('reload_by_demo_css', ['less_demo'], function () {
     lrServer.changed({body: {files: ['.']}});
 });
 
+gulp.task('test', function(done) {
+    var karmaBin = require.resolve('karma/bin/karma');
+    var karmaConfig = path.join(__dirname, './karma.phantomjs.conf.js');
+    var args = [karmaBin, 'start', karmaConfig];
+    util.runCmd('node', args, done);
+});
+
+gulp.task('coverage', (done) => {
+    if (fs.existsSync(util.getFromCwd('coverage'))) {
+        // for cross-platform compatibility(Windows/Linux/OS X)
+        shelljs.rm('-rf', util.getFromCwd('coverage'));
+    }
+    var karmaBin = require.resolve('karma/bin/karma');
+    var karmaConfig = path.join(__dirname, './karma.phantomjs.coverage.conf.js');
+    var args = [karmaBin, 'start', karmaConfig];
+    util.runCmd('node', args, done);
+});
+
 gulp.task('server', [
     'less_demo'
 ], function() {
     
-    var compiler = webpack(webpackCfg, function(err, stats) {
-        // 重要 打包过程中的语法错误反映在stats中
+    var compiler = webpack(webpackCfg);
+
+    var webpackDevMiddlewareInstance = webpackDevMiddleware(compiler, {
+        publicPath: '/dist',
+        stats: {
+            chunks: false
+        }
+    });
+    var app = express();
+    app.use(function(req, res, next) {
+        // 支持 CORS 跨域
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        next();
+    });
+    app.use(webpackDevMiddlewareInstance);
+    
+    app.use(livereload({
+        port: 35729
+    })); 
+    app.use(serveStatic('.'));
+
+    compiler.watch({ // watch options:
+        aggregateTimeout: 300, // wait so long for more changes
+        poll: true // use polling instead of native watchers
+        // pass a number to set the polling interval
+    }, function(err, stats) {
+        // ...
         if (err) {
             console.log(err)
         } else {
             console.log(colors.info('###### pack_demo done ######'));
-            var webpackDevMiddlewareInstance = webpackDevMiddleware(compiler, {
-                publicPath: '/dist',
-                stats: {
-                    chunks: false
-                }
-            });
-            var app = express();
-            app.use(function(req, res, next) {
-                // 支持 CORS 跨域
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                next();
-            });
-            app.use(webpackDevMiddlewareInstance);
-            
-            app.use(livereload({
-                port: 35729
-            })); 
-            app.use(serveStatic('.'));
-
-            compiler.watch({ // watch options:
-                aggregateTimeout: 300, // wait so long for more changes
-                poll: true // use polling instead of native watchers
-                // pass a number to set the polling interval
-            }, function(err, stats) {
-                // ...
-                console.log(colors.info('reload'));
-                lrServer.changed({body: {files: ['.']}});
-            });
-
-            webpackDevMiddlewareInstance.waitUntilValid(function(){
-              console.log(colors.info('Package is in a valid state'));
-            });
-
-            // 开启 livereload
-
-            
-            lrServer.listen(35729, function() {
-                console.log(colors.info('livereload server start: listening on 35729'));
-            });
-
-            // 开启调试服务
-            var server = app.listen('8001', function(err) {
-                console.log(colors.info("dev server start: listening on 8001"));
-                if (err) {
-                    console.error(err);
-                }
-                else {
-                }
-
-            });
+            lrServer.changed({body: {files: ['.']}});
         }
+        
+    });
+
+    webpackDevMiddlewareInstance.waitUntilValid(function(){
+      console.log(colors.info('Package is in a valid state'));
+    });
+
+    // 开启 livereload
+
+    
+    lrServer.listen(35729, function() {
+        console.log(colors.info('livereload server start: listening on 35729'));
+    });
+
+    // 开启调试服务
+    var server = app.listen('8001', function(err) {
+        console.log(colors.info("dev server start: listening on 127.0.0.1:8001"));
+        if (err) {
+            console.error(err);
+        }
+        else {
+        }
+
     });
 
 

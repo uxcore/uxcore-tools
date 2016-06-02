@@ -1,10 +1,11 @@
 var fs = require('fs');
 var webpack = require('webpack');
 var path = require('path');
+var happypack = require('happypack');
+var ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 function getLoaderExclude(path) {
     var isNpmModule = !!path.match(/node_modules/);
-    // var isUxcore = !!path.match(/node_modules[\/\\](@ali[\/\\])?uxcore/);
     return isNpmModule;
 }
 
@@ -18,13 +19,12 @@ module.exports = {
         filename: "[name].js",
         sourceMapFilename: "[name].js.map"
     },
-    devtool: 'cheap-module-eval-source-map', // 这个配置要和output.sourceMapFilename一起使用
     module: {
         loaders: [
             {
 
                 test: /\.js(x)*$/,
-                // uxcore以外的modules都不需要经过babel解析
+                // npm modules 都不需要经过babel解析
                 exclude: getLoaderExclude,
                 loader: 'babel-loader',
                 query: {
@@ -37,7 +37,8 @@ module.exports = {
                         return require.resolve('babel-plugin-' + item);
                     }),
                     cacheDirectory: true
-                }
+                },
+                happy: {id: 'js'}
             }
         ]
     },
@@ -53,6 +54,13 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"development"'
-        })
+        }),
+        new webpack.SourceMapDevToolPlugin({
+            columns: false
+        }),
+        new happypack({
+            id: 'js'
+        }),
+        new ProgressBarPlugin()
     ]
 };

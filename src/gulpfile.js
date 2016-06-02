@@ -13,7 +13,9 @@ var lr = require('tiny-lr');
 var lrServer = lr();
 var serveStatic = require('./serveStatic');
 var shelljs = require('shelljs');
-
+var ip = require('ip');
+var portscanner = require('portscanner');
+var open = require('open');
 
 // gulp & gulp plugin
 var gulp = require('gulp');
@@ -119,6 +121,8 @@ gulp.task('server', [
 
     var webpackDevMiddlewareInstance = webpackDevMiddleware(compiler, {
         publicPath: '/dist',
+        aggregateTimeout: 300, // wait so long for more changes
+        poll: true, // use polling instead of native watchers
         stats: {
             chunks: false
         }
@@ -136,20 +140,10 @@ gulp.task('server', [
     })); 
     app.use(serveStatic('.'));
 
-    compiler.watch({ // watch options:
-        aggregateTimeout: 300, // wait so long for more changes
-        poll: true // use polling instead of native watchers
-        // pass a number to set the polling interval
-    }, function(err, stats) {
-        // ...
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(colors.info('###### pack_demo done ######'));
-            lrServer.changed({body: {files: ['.']}});
-        }
-        
-    });
+    compiler.plugin('done', function(stats) {
+        console.log(colors.info('###### pack_demo done ######'));
+        lrServer.changed({body: {files: ['.']}});
+    })
 
     webpackDevMiddlewareInstance.waitUntilValid(function(){
       console.log(colors.info('Package is in a valid state'));
@@ -157,19 +151,22 @@ gulp.task('server', [
 
     // 开启 livereload
 
-    
     lrServer.listen(35729, function() {
         console.log(colors.info('livereload server start: listening on 35729'));
     });
 
     // 开启调试服务
-    var server = app.listen('8001', function(err) {
-        console.log(colors.info("dev server start: listening on 127.0.0.1:8001"));
-        if (err) {
-            console.error(err);
-        } else {}
-
-    });
+    portscanner.findAPortNotInUse(3000, 3010, ip.address(), function(error, port) {
+        var url = "http://" + ip.address() + ":" + port;
+        var server = app.listen(port, function(err) {
+            console.log(colors.info("dev server start: listening at " + url));
+            if (err) {
+                console.error(err);
+            }
+        });
+        open(url);
+    })
+    
     gulp.watch(path.join(process.cwd(), './src/**/*.less'), ['reload_by_demo_css']);
 
     gulp.watch(path.join(process.cwd(), './demo/**/*.less'), ['reload_by_demo_css']);

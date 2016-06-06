@@ -1,5 +1,10 @@
 # history
 
+## 0.2.4
+
+* `CHANGED` remove happyPack & process bar (performance ?)
+* `CHANGED` add tnpm-dep task
+
 ## 0.2.3
 
 * `NEW` add autoprefix less plugin

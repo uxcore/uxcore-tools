@@ -12,6 +12,7 @@ module.exports = function () {
     require.resolve('es5-shim/es5-sham.js'),
     indexSpec,
   ];
+  // webpackCfg.entry = [];
   var preprocessors = {};
   preprocessors[indexSpec] = ['webpack', 'sourcemap'];
   return {
@@ -26,7 +27,6 @@ module.exports = function () {
     files: files,
     preprocessors: preprocessors,
     webpack: assign(webpackCfg, {
-      devtool: 'inline-source-map',
       externals: {},
     }),
     webpackServer: {

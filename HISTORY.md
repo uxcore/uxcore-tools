@@ -1,5 +1,9 @@
 # history
 
+## 0.2.3
+
+* `NEW` add autoprefix less plugin
+
 ## 0.2.2
 
 * `CHANGED` Do not parse uxcore modules in babel-loader

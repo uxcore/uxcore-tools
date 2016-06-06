@@ -21,6 +21,7 @@ var open = require('open');
 var gulp = require('gulp');
 var babel = require('gulp-babel');
 var less = require('gulp-less');
+var lessPluginAutoPrefix = require('less-plugin-autoprefix');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var replace = require('gulp-just-replace');
@@ -33,9 +34,15 @@ var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackCfg = require('./webpack.dev.js');
 var MemoryFS = require("memory-fs");
 
+var url = "";
+
 
 colors.setTheme({
     info: ['bold', 'green']
+});
+
+var autoprefix = new lessPluginAutoPrefix({
+    browsers: ['last 2 versions', 'not ie < 8']
 });
 
 
@@ -61,7 +68,9 @@ gulp.task('pack_build', function(cb) {
 gulp.task('less_demo', function(cb) {
     gulp.src([path.join(process.cwd(), './demo/**/*.less')])
         .pipe(sourcemaps.init())
-        .pipe(less())
+        .pipe(less({
+            plugins: [autoprefix]
+        }))
         .pipe(concat('demo.css'))
         .pipe(replace([{
             search: /\/\*#\ssourceMappingURL=([^\*\/]+)\.map\s\*\//g,
@@ -104,11 +113,18 @@ gulp.task('test', function(done) {
 
 gulp.task('coverage', (done) => {
     if (fs.existsSync(util.getFromCwd('coverage'))) {
-        // for cross-platform compatibility(Windows/Linux/OS X)
         shelljs.rm('-rf', util.getFromCwd('coverage'));
     }
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.phantomjs.coverage.conf.js');
+    var args = [karmaBin, 'start', karmaConfig];
+    util.runCmd('node', args, done);
+});
+
+// run your unit tests across many browsers and platforms on Sauce Labs
+gulp.task('saucelabs', (done) => {
+    var karmaBin = require.resolve('karma/bin/karma');
+    var karmaConfig = path.join(__dirname, './karma.saucelabs.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
@@ -147,6 +163,7 @@ gulp.task('server', [
 
     webpackDevMiddlewareInstance.waitUntilValid(function(){
       console.log(colors.info('Package is in a valid state'));
+      open(url)
     });
 
     // 开启 livereload
@@ -157,14 +174,14 @@ gulp.task('server', [
 
     // 开启调试服务
     portscanner.findAPortNotInUse(3000, 3010, ip.address(), function(error, port) {
-        var url = "http://" + ip.address() + ":" + port;
+        url = "http://" + ip.address() + ":" + port;
         var server = app.listen(port, function(err) {
             console.log(colors.info("dev server start: listening at " + url));
             if (err) {
                 console.error(err);
             }
         });
-        open(url);
+        ;
     })
     
     gulp.watch(path.join(process.cwd(), './src/**/*.less'), ['reload_by_demo_css']);
@@ -175,7 +192,30 @@ gulp.task('server', [
 
 gulp.task('build', ['pack_build'], function() {});
 
-gulp.task('publish', ['pack_build'], function() {
+gulp.task('start', ['server']);
+
+gulp.task('dep', function() {
+    var commands = ['console-polyfill@^0.2.2', 'es5-shim@^4.5.8', 'react@15.x', 'react-dom@15.x', 'uxcore-kuma@2.x', 'kuma-base@1.x', '--production'];
+    commands.forEach(function(item) {
+        util.runCmd('npm', ['i', '-d', item]);
+    });
+});
+
+gulp.task('tnpm-dep', function() {
+    var pkg = util.getPkg();
+    var commands = [];
+    for (var item in pkg.devDependencies) {
+        if (item !== 'uxcore-tools') {
+            commands.push(item + '@' + pkg.devDependencies[item]);
+        }
+    }
+    commands.push('--production');
+    commands.forEach(function(item) {
+        util.runCmd('tnpm', ['i', '-d', item]);
+    });
+});
+
+gulp.task('pub', ['pack_build'], function() {
     util.getQuestions().then(function(questions) {
         inquirer.prompt(questions).then(function(answers) {
             var pkg = util.getPkg();

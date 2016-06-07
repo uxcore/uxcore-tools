@@ -42,7 +42,8 @@ module.exports = function(config) {
     // see https://github.com/karma-runner/karma-sauce-launcher
     config.set(assign(karmaCommonConfig(), {
         sauceLabs: {
-            testName: 'UXCore cross-broswer util test'
+            testName: 'UXCore cross-broswer util test',
+            startConnect: false
         },
         customLaunchers: customLaunchers,
         browsers: Object.keys(customLaunchers),

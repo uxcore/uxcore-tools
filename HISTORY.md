@@ -1,5 +1,9 @@
 # history
 
+## 0.2.6
+
+* `CHANGED` not open sauce connent in karma
+
 ## 0.2.5
 
 * `FIX` add missing dependency

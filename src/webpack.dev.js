@@ -10,7 +10,7 @@ function getLoaderExclude(path) {
 }
 
 module.exports = {
-    cache: false,
+    cache: true,
     entry: {
         demo: './demo/index'
     },

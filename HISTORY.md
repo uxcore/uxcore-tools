@@ -1,5 +1,10 @@
 # history
 
+## 0.2.5
+
+* `FIX` add missing dependency
+* `CHANGED` open webpack cache
+
 ## 0.2.4
 
 * `CHANGED` remove happyPack & process bar (performance ?)

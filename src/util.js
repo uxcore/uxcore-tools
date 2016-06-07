@@ -92,7 +92,7 @@ var utils = {
                     }
                 ];
                 resolve(questions);
-            })
+            });
         })
     }
 }

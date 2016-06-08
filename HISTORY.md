@@ -1,5 +1,9 @@
 # history
 
+## 0.2.9
+
+* `NEW` add es3 plugin 
+
 ## 0.2.8
 
 * `CHANGED` make env production

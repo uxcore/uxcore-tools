@@ -32,6 +32,8 @@ module.exports = {
                         return require.resolve('babel-preset-' + item);
                     }),
                     plugins: [
+                        'transform-es3-member-expression-literals',
+                        'transform-es3-property-literals',
                         'add-module-exports'
                     ].map(function(item) {
                         return require.resolve('babel-plugin-' + item);

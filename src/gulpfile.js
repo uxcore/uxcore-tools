@@ -129,6 +129,13 @@ gulp.task('saucelabs', (done) => {
     util.runCmd('node', args, done);
 });
 
+gulp.task('browsers', (done) => {
+    var karmaBin = require.resolve('karma/bin/karma');
+    var karmaConfig = path.join(__dirname, './karma.browsers.conf.js');
+    var args = [karmaBin, 'start', karmaConfig];
+    util.runCmd('node', args, done);
+})
+
 gulp.task('server', [
     'less_demo'
 ], function() {
@@ -195,7 +202,14 @@ gulp.task('build', ['pack_build'], function() {});
 gulp.task('start', ['server']);
 
 gulp.task('dep', function() {
-    var commands = ['console-polyfill@^0.2.2', 'es5-shim@^4.5.8', 'react@15.x', 'react-dom@15.x', 'uxcore-kuma@2.x', 'kuma-base@1.x', '--production'];
+    var pkg = util.getPkg();
+    var commands = [];
+    for (var item in pkg.devDependencies) {
+        if (item !== 'uxcore-tools') {
+            commands.push(item + '@' + pkg.devDependencies[item]);
+        }
+    }
+    commands.push('--production');
     commands.forEach(function(item) {
         util.runCmd('npm', ['i', '-d', item]);
     });

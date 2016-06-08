@@ -1,5 +1,10 @@
 # history
 
+## 0.2.8
+
+* `CHANGED` make env production
+* `NEW` add gulp task browsers
+
 ## 0.2.7
 
 * `CHANGED` open sauce connent in karma & set username/accesskey

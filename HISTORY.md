@@ -1,5 +1,9 @@
 # history
 
+## 0.2.7
+
+* `CHANGED` open sauce connent in karma & set username/accesskey
+
 ## 0.2.6
 
 * `CHANGED` not open sauce connent in karma

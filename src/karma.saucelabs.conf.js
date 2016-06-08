@@ -43,7 +43,8 @@ module.exports = function(config) {
     config.set(assign(karmaCommonConfig(), {
         sauceLabs: {
             testName: 'UXCore cross-broswer util test',
-            startConnect: false
+            username: 'uxcore',
+            accessKey: '573b8ba6-b2a8-4fec-91df-81f64e059b82',
         },
         customLaunchers: customLaunchers,
         browsers: Object.keys(customLaunchers),

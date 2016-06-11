@@ -1,5 +1,21 @@
 # history
 
+## 0.2.16
+
+* `CHANGED` detect sauce.json locally
+
+## 0.2.12
+
+* `CHANGED` add concurrency(3) in saucelab test config
+
+## 0.2.11
+
+* `CHANGED` only use definePlugin in saucelabs
+
+## 0.2.10
+
+* `FIX` fix env defination bug
+
 ## 0.2.9
 
 * `NEW` add es3 plugin 

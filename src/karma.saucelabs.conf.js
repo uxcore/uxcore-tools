@@ -1,5 +1,7 @@
 var karmaCommonConfig = require('./getKarmaCommonConfig');
 var assign = require('object-assign');
+var webpack = require('webpack');
+var util = require('./util');
 
 module.exports = function(config) {
     var customLaunchers = {
@@ -39,16 +41,35 @@ module.exports = function(config) {
             version: '8',
         },
     };
+
+    // Use ENV vars on Travis and sauce.json locally to get credentials
+    if (!process.env.SAUCE_USERNAME) {
+        if (!fs.existsSync(util.getFromCwd('sauce.json'))) {
+            console.log('Create a sauce.json with your credentials.');
+            process.exit(1);
+        } else {
+            var sauceCfg = JSON.parse(file.readFileAsString('sauce.json'));
+            process.env.SAUCE_USERNAME = sauceCfg.username;
+            process.env.SAUCE_ACCESS_KEY = sauceCfg.accessKey;
+        }
+    }
+
+    var commonConfig = karmaCommonConfig();
+    commonConfig.webpack.plugins = [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        })
+    ];
     // see https://github.com/karma-runner/karma-sauce-launcher
-    config.set(assign(karmaCommonConfig(), {
+    config.set(assign(commonConfig, {
         sauceLabs: {
             testName: 'UXCore cross-broswer util test',
-            username: 'uxcore',
-            accessKey: '573b8ba6-b2a8-4fec-91df-81f64e059b82',
+            recordScreenshots: true
         },
         customLaunchers: customLaunchers,
         browsers: Object.keys(customLaunchers),
         reporters: ['mocha', 'saucelabs'],
         singleRun: true,
+        concurrency: 4,
     }));
 }

@@ -44,6 +44,11 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        root: [
+            path.join(process.cwd(), './node_modules')
+        ]
+    },
     resolveLoader: {
         root: [
             path.join(__dirname, '../node_modules')
@@ -54,9 +59,7 @@ module.exports = {
         'react-dom': 'var ReactDOM'
     },
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"prodution"'
-        }),
+        // SourceMap plugin will define process.env.NODE_ENV as development
         new webpack.SourceMapDevToolPlugin({
             columns: false
         }),

@@ -134,7 +134,14 @@ gulp.task('browsers', (done) => {
     var karmaConfig = path.join(__dirname, './karma.browsers.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
-})
+});
+
+gulp.task('chrome', (done) => {
+    var karmaBin = require.resolve('karma/bin/karma');
+    var karmaConfig = path.join(__dirname, './karma.chrome.conf.js');
+    var args = [karmaBin, 'start', karmaConfig];
+    util.runCmd('node', args, done);
+});
 
 gulp.task('server', [
     'less_demo'

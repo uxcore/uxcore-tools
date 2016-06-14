@@ -44,6 +44,16 @@ var utils = {
     getEslintCfg: function() {
         return eslintCfg;
     },
+    getPackages: function() {
+        var commands = [];
+        for (var item in pkg.devDependencies) {
+            if (item !== 'uxcore-tools') {
+                commands.push(item + '@' + pkg.devDependencies[item]);
+            }
+        }
+        commands.push('--production');
+        return commands;
+    },
     getQuestions: function() {
         var me = this;
         return new Promise(function(resolve, reject) {

@@ -1,6 +1,11 @@
 # history
 
-## 0.2.16
+
+## 0.2.18
+
+* `NEW` add new task `update` & `tnpm-update`
+
+## 0.2.17
 
 * `CHANGED` detect sauce.json locally
 

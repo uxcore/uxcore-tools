@@ -36,6 +36,8 @@ var MemoryFS = require("memory-fs");
 
 var url = "";
 
+var remark = require('remark');
+var select = require('unist-util-select');
 
 colors.setTheme({
     info: ['bold', 'green']
@@ -45,6 +47,15 @@ var autoprefix = new lessPluginAutoPrefix({
     browsers: ['last 2 versions', 'not ie < 8']
 });
 
+gulp.task('remark', function(done) {
+    var ast = remark.parse(file.readFileAsString(util.getFromCwd('README.md')), {
+        position: false
+    });
+    // var props = select(ast, 'table')
+
+    console.log(JSON.stringify(ast));
+    done();
+})
 
 gulp.task('pack_build', function(cb) {
     console.log(colors.info('###### pack_build start ######'))
@@ -154,7 +165,7 @@ gulp.task('server', [
         aggregateTimeout: 300, // wait so long for more changes
         poll: true, // use polling instead of native watchers
         stats: {
-            chunks: false
+            chunks: true
         }
     });
     var app = express();
@@ -209,30 +220,30 @@ gulp.task('build', ['pack_build'], function() {});
 gulp.task('start', ['server']);
 
 gulp.task('dep', function() {
-    var pkg = util.getPkg();
-    var commands = [];
-    for (var item in pkg.devDependencies) {
-        if (item !== 'uxcore-tools') {
-            commands.push(item + '@' + pkg.devDependencies[item]);
-        }
-    }
-    commands.push('--production');
+    var commands = util.getPackages();
     commands.forEach(function(item) {
         util.runCmd('npm', ['i', '-d', item]);
     });
 });
 
+gulp.task('update', function() {
+    var commands = util.getPackages();
+    commands.forEach(function(item) {
+        util.runCmd('npm', ['update', '-d', item]);
+    });
+});
+
 gulp.task('tnpm-dep', function() {
-    var pkg = util.getPkg();
-    var commands = [];
-    for (var item in pkg.devDependencies) {
-        if (item !== 'uxcore-tools') {
-            commands.push(item + '@' + pkg.devDependencies[item]);
-        }
-    }
-    commands.push('--production');
+    var commands = util.getPackages();
     commands.forEach(function(item) {
         util.runCmd('tnpm', ['i', '-d', item]);
+    });
+});
+
+gulp.task('tnpm-update', function() {
+    var commands = util.getPackages();
+    commands.forEach(function(item) {
+        util.runCmd('tnpm', ['update', '-d', item]);
     });
 });
 

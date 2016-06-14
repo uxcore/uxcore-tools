@@ -2,6 +2,8 @@ var karmaCommonConfig = require('./getKarmaCommonConfig');
 var assign = require('object-assign');
 var webpack = require('webpack');
 var util = require('./util');
+var fs = require('fs');
+var file = require('html-wiring');
 
 module.exports = function(config) {
     var customLaunchers = {

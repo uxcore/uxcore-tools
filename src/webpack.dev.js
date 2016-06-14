@@ -6,6 +6,7 @@ var ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 function getLoaderExclude(path) {
     var isNpmModule = !!path.match(/node_modules/);
+    console.log(isNpmModule);
     return isNpmModule;
 }
 
@@ -25,7 +26,8 @@ module.exports = {
 
                 test: /\.js(x)*$/,
                 // npm modules 都不需要经过babel解析
-                exclude: getLoaderExclude,
+                // exclude: getLoaderExclude,
+                include: [path.join(process.cwd(), './src'), path.join(process.cwd(), './demo'), path.join(process.cwd(), './test')],
                 loader: 'babel-loader',
                 query: {
                     presets: ['react', 'es2015-ie', 'stage-1'].map(function(item) {

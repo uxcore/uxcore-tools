@@ -1,6 +1,18 @@
 # history
 
 
+## 0.2.21
+
+* `CHANGED` stop screenshot in saucelabs task
+
+## 0.2.20
+
+* `FIX` remove unist-util-select
+
+## 0.2.19
+
+* `FIX` remove remark
+
 ## 0.2.18
 
 * `NEW` add new task `update` & `tnpm-update`

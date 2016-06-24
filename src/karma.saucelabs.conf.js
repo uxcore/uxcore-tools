@@ -66,7 +66,6 @@ module.exports = function(config) {
     config.set(assign(commonConfig, {
         sauceLabs: {
             testName: 'UXCore cross-broswer util test',
-            recordScreenshots: true
         },
         customLaunchers: customLaunchers,
         browsers: Object.keys(customLaunchers),

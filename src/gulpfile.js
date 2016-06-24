@@ -36,9 +36,6 @@ var MemoryFS = require("memory-fs");
 
 var url = "";
 
-var remark = require('remark');
-var select = require('unist-util-select');
-
 colors.setTheme({
     info: ['bold', 'green']
 });
@@ -46,16 +43,6 @@ colors.setTheme({
 var autoprefix = new lessPluginAutoPrefix({
     browsers: ['last 2 versions', 'not ie < 8']
 });
-
-gulp.task('remark', function(done) {
-    var ast = remark.parse(file.readFileAsString(util.getFromCwd('README.md')), {
-        position: false
-    });
-    // var props = select(ast, 'table')
-
-    console.log(JSON.stringify(ast));
-    done();
-})
 
 gulp.task('pack_build', function(cb) {
     console.log(colors.info('###### pack_build start ######'))
@@ -97,7 +84,10 @@ gulp.task('less_demo', function(cb) {
 
 gulp.task('lint', function(cb) {
     var eslintCfg = util.getEslintCfg();
-    gulp.src([path.join(process.cwd(), './src/**/*.js')])
+    gulp.src([
+            path.join(process.cwd(), './src/**/*.js'),
+            path.join(process.cwd(), './demo/**/*.js')
+        ])
         .pipe(eslint(eslintCfg))
         .pipe(eslint.format('table'))
         .pipe(eslint.failAfterError());
@@ -165,7 +155,7 @@ gulp.task('server', [
         aggregateTimeout: 300, // wait so long for more changes
         poll: true, // use polling instead of native watchers
         stats: {
-            chunks: true
+            chunks: false
         }
     });
     var app = express();

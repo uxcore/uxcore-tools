@@ -65,9 +65,9 @@ module.exports = {
         new webpack.SourceMapDevToolPlugin({
             columns: false
         }),
-        // new happypack({
-        //     id: 'js'
-        // }),
+        new happypack({
+            id: 'js'
+        }),
         // new ProgressBarPlugin()
     ]
 };

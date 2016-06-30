@@ -1,6 +1,10 @@
 # history
 
 
+## 0.2.22
+
+* `CHANGED` add sourcemap and happypack in chrome task
+
 ## 0.2.21
 
 * `CHANGED` stop screenshot in saucelabs task

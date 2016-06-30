@@ -1,5 +1,8 @@
 # history
 
+## 0.2.23
+
+* `CHANGED` remove definePlugin in chrome & saucelabs task
 
 ## 0.2.22
 

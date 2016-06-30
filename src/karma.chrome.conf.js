@@ -7,9 +7,9 @@ module.exports = function(config) {
     var browsers = ['Chrome'];
     var commonConfig = karmaCommonConfig();
     commonConfig.webpack.plugins = [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
-        }),
+        // new webpack.DefinePlugin({
+        //     'process.env.NODE_ENV': '"production"'
+        // }),
         new webpack.SourceMapDevToolPlugin({
             columns: false
         }),

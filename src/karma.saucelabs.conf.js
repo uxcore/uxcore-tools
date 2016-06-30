@@ -58,9 +58,9 @@ module.exports = function(config) {
 
     var commonConfig = karmaCommonConfig();
     commonConfig.webpack.plugins = [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
-        })
+        // new webpack.DefinePlugin({
+        //     'process.env.NODE_ENV': '"production"'
+        // })
     ];
     // see https://github.com/karma-runner/karma-sauce-launcher
     config.set(assign(commonConfig, {

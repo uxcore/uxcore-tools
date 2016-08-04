@@ -1,5 +1,10 @@
 # history
 
+
+## 0.2.24
+
+* `CHANGED` change webpack resolve extension, add '.jsx .ts'
+
 ## 0.2.23
 
 * `CHANGED` remove definePlugin in chrome & saucelabs task

@@ -46,7 +46,7 @@ var autoprefix = new lessPluginAutoPrefix({
 
 gulp.task('pack_build', function(cb) {
     console.log(colors.info('###### pack_build start ######'))
-    gulp.src([path.join(process.cwd(), './src/**/*.js')])
+    gulp.src([path.join(process.cwd(), './src/**/*.js'), path.join(process.cwd(), './src/**/*.jsx')])
         .pipe(babel({
             presets: ['react', 'es2015-ie', 'stage-1'].map(function(item) {
                 return require.resolve('babel-preset-' + item);

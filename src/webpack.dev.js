@@ -43,8 +43,30 @@ module.exports = {
                     cacheDirectory: true
                 },
                 happy: {id: 'js'}
+            },
+            {
+                test: /\.svg$/,
+                loader: 'babel',
+                include: [path.join(process.cwd(), './src')],
+                query: {
+                    presets: ['react', 'es2015-ie'].map(function(item) {
+                        return require.resolve('babel-preset-' + item);
+                    }),
+                    cacheDirectory: true
+                }
+            }, 
+            {
+                test: /\.svg$/,
+                loader: 'svg2react',
+                include: [path.join(process.cwd(), './src')]
             }
-        ]
+        ],
+        postLoaders: [
+            {
+                test: /\.js(x)*$/,
+                loader: 'es3ify',
+            }
+        ],
     },
     resolve: {
         root: [

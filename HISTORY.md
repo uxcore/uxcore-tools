@@ -1,5 +1,13 @@
 # history
 
+## 0.2.26
+
+* `CHANGED` support require svg
+* `CHANGED` add es3ify-loader 
+
+## 0.2.25
+
+* `CHANGED` build will parse jsx file
 
 ## 0.2.24
 

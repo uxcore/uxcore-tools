@@ -1,6 +1,6 @@
 {
   "name": "uxcore-tools",
-  "version": "0.2.24",
+  "version": "0.2.26",
   "description": "development tools for uxcore",
   "main": "index.js",
   "scripts": {},
@@ -25,6 +25,7 @@
     "connect-livereload": "~0.5.4",
     "console-polyfill": "^0.2.2",
     "cross-spawn": "~4.0.0",
+    "es3ify-loader": "^0.2.0",
     "es5-shim": "^4.5.8",
     "eslint": "~2.11.0",
     "eslint-config-airbnb": "~9.0.1",
@@ -70,6 +71,7 @@
     "promise": "~7.1.1",
     "send": "~0.13.2",
     "shelljs": "~0.7.0",
+    "svg2react-loader": "^1.0.3",
     "tiny-lr": "~0.2.1",
     "webpack": "~1.x",
     "webpack-dev-middleware": "~1.6.1"

@@ -46,27 +46,50 @@ function parseSourceFiles() {
   });
 }
 
+function getDirectory(path) {
+  return new Promise(function(resolve, reject){
+    fs.stat(path, function(err, stats){
+      if (err || !stats.isDirectory()) {
+        fs.mkdir(path, function(_err){
+          if (_err) {
+            reject(_err);
+          } else {
+            resolve();
+          }
+        });
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
 function docWriter() {
   return new Promise(function(resolve, reject){
     parseSourceFiles()
       .then(function(data){
         var markdownJson = convertDocToMarkdownJson(data);
-
-        Promise.all(LANG.map(function(lang){
-          return new Promise(function(_resolve, _reject){
-            fs.writeFile('./DOC.' + lang + '.md', json2md(markdownJson[lang]), function(err){
-              if (err) {
-                _reject(err);
-              } else {
-                _resolve('./DOC.' + lang + '.md');
-              }
+        getDirectory('./doc')
+          .then(function(){
+            Promise.all(LANG.map(function(lang){
+              return new Promise(function(_resolve, _reject){
+                fs.writeFile('./doc/' + lang + '.md', json2md(markdownJson[lang]), function(err){
+                  if (err) {
+                    _reject(err);
+                  } else {
+                    _resolve('./doc/' + lang + '.md');
+                  }
+                });
+              })
+            })).then(function(res){
+              resolve(res);
+            }).catch(function(err){
+              reject(err);
             });
           })
-        })).then(function(res){
-          resolve(res);
-        }).catch(function(err){
-          reject(err);
-        });
+          .catch(function(err){
+            reject(err);
+          })
       })
       .catch(function(err){
         reject(err);

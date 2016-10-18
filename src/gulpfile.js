@@ -266,6 +266,6 @@ gulp.task('doc', function() {
             console.log(colors.info(logStr));
         })
         .catch(function(err){
-            console.log(err);
+            console.error(err);
         });
 });

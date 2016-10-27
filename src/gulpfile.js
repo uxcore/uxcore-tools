@@ -34,6 +34,9 @@ var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackCfg = require('./webpack.dev.js');
 var MemoryFS = require("memory-fs");
 
+// doc generator
+var docWriter = require('./docWriter');
+
 var url = "";
 
 colors.setTheme({
@@ -251,4 +254,18 @@ gulp.task('pub', ['pack_build'], function() {
             spawn.sync(answers.npm, ['publish'], {stdio: 'inherit'});
         });
     });
+});
+
+gulp.task('doc', function() {
+    docWriter()
+        .then(function(res){
+            var logStr = res.map(function(file){
+                return path.join(process.cwd(), file);
+            }).join('\n');
+            logStr = 'the documenet files:\n' + logStr + '\ngenerate successfully!'
+            console.log(colors.info(logStr));
+        })
+        .catch(function(err){
+            console.error(err);
+        });
 });

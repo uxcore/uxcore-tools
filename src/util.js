@@ -2,8 +2,13 @@ var file = require('html-wiring');
 var path = require('path');
 var pkg = JSON.parse(file.readFileAsString('package.json'));
 var eslintCfg = JSON.parse(file.readFileAsString(__dirname + '/eslintrc.json'));
+var userLintCfg;
 var Promise = require('promise');
 var git = require('git-rev');
+
+try {
+    userLintCfg = JSON.parse(file.readFileAsString(path.join(process.cwd(), './.eslintrc.json')));
+} catch (e) {}
 
 var utils = {
     versionCompare: function(a, b) {
@@ -27,7 +32,7 @@ var utils = {
             // keep color
             stdio: 'inherit',
         });
-        runner.on('close', (code) => {
+        runner.on('close', function(code) {
             if (fn) {
                 fn(code);
             }
@@ -42,7 +47,7 @@ var utils = {
         return pkg;
     },
     getEslintCfg: function() {
-        return eslintCfg;
+        return userLintCfg || eslintCfg;
     },
     getPackages: function() {
         var commands = [];

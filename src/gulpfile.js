@@ -89,7 +89,9 @@ gulp.task('lint', function(cb) {
     var eslintCfg = util.getEslintCfg();
     gulp.src([
             path.join(process.cwd(), './src/**/*.js'),
-            path.join(process.cwd(), './demo/**/*.js')
+            path.join(process.cwd(), './src/**/*.jsx'),
+            path.join(process.cwd(), './demo/**/*.js'),
+            path.join(process.cwd(), './demo/**/*.jsx'),
         ])
         .pipe(eslint(eslintCfg))
         .pipe(eslint.format('table'))

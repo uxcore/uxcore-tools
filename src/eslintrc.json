@@ -1,8 +1,13 @@
 {
-    "extends": "airbnb",
-    "parser": "babel-eslint",
-    "env": {
-        "node": true,
-        "mocha": true
-    }
+  "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-no-bind": "off"
+  }
 }

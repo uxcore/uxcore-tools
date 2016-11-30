@@ -16,6 +16,7 @@ var shelljs = require('shelljs');
 var ip = require('ip');
 var portscanner = require('portscanner');
 var open = require('open');
+var assign = require('object-assign');
 
 // gulp & gulp plugin
 var gulp = require('gulp');
@@ -152,8 +153,14 @@ gulp.task('chrome', (done) => {
 gulp.task('server', [
     'less_demo'
 ], function() {
+
+    var customWebpackCfg = {};
+    var customWebpackCfgPath = path.join(process.cwd(), './webpack.custom.js');
+    if (fs.existsSync(customWebpackCfgPath)) {
+        customWebpackCfg = require(customWebpackCfgPath);
+    }
     
-    var compiler = webpack(webpackCfg);
+    var compiler = webpack(assign(webpackCfg, customWebpackCfg));
 
     var webpackDevMiddlewareInstance = webpackDevMiddleware(compiler, {
         publicPath: '/dist',

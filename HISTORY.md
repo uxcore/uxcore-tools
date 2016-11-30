@@ -1,5 +1,9 @@
 # history
 
+## 0.2.30
+
+* `NEW` support local webpack config.
+
 ## 0.2.26
 
 * `CHANGED` support require svg

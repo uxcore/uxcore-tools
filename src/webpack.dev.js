@@ -69,9 +69,6 @@ module.exports = {
         ],
     },
     resolve: {
-        root: [
-            path.join(process.cwd(), './node_modules')
-        ],
         extensions: ['', '.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx'],
     },
     resolveLoader: {
@@ -86,7 +83,7 @@ module.exports = {
     plugins: [
         // SourceMap plugin will define process.env.NODE_ENV as development
         new webpack.SourceMapDevToolPlugin({
-            columns: false
+            columns: false,
         }),
         new happypack({
             id: 'js'

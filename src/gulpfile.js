@@ -67,6 +67,11 @@ gulp.task('pack_build', function(cb) {
         });
 });
 
+gulp.task('debug', function(cb) {
+    var webpackBin = require.resolve('webpack');
+    util.runCmd('node', ['--debug', webpackBin, '--config', path.join(__dirname, './webpack.dev.js')]);
+})
+
 gulp.task('less_demo', function(cb) {
     gulp.src([path.join(process.cwd(), './demo/**/*.less')])
         .pipe(sourcemaps.init())
@@ -153,7 +158,6 @@ gulp.task('chrome', (done) => {
 gulp.task('server', [
     'less_demo'
 ], function() {
-
     var customWebpackCfg = {};
     var customWebpackCfgPath = path.join(process.cwd(), './webpack.custom.js');
     if (fs.existsSync(customWebpackCfgPath)) {

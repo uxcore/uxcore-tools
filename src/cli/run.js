@@ -21,6 +21,8 @@ program.parse(process.argv);
 
 var task = program.args[0];
 
+console.log(program.args);
+
 if (!task) {
     program.help()
 } else {

@@ -1,5 +1,9 @@
 # history
 
+## 0.2.31
+
+* `CHANGED` remove webpack resolve.root config
+
 ## 0.2.30
 
 * `NEW` support local webpack config.

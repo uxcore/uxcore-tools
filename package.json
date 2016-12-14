@@ -1,6 +1,6 @@
 {
   "name": "uxcore-tools",
-  "version": "0.2.31",
+  "version": "0.2.32",
   "description": "development tools for uxcore",
   "main": "index.js",
   "scripts": {},

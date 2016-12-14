@@ -1,5 +1,9 @@
 # history
 
+## 0.2.32
+
+* `CHANGED` add enzyme support
+
 ## 0.2.31
 
 * `CHANGED` remove webpack resolve.root config

@@ -27,7 +27,12 @@ module.exports = function () {
     files: files,
     preprocessors: preprocessors,
     webpack: assign(webpackCfg, {
-      externals: {},
+      externals: {
+        'cheerio': 'window',
+        'react/addons': true,
+        'react/lib/ExecutionEnvironment': true,
+        'react/lib/ReactContext': true,
+      },
     }),
     webpackServer: {
       noInfo: true, //please don't spam the console when running in karma!

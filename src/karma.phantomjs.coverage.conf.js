@@ -3,6 +3,7 @@
 var getFromCwd = require('./util').getFromCwd;
 var getKarmaCommonConfig = require('./getKarmaCommonConfig');
 var assign = require('object-assign');
+var path = require('path');
 
 module.exports = function conf(config) {
   var commonConfig = getKarmaCommonConfig();
@@ -27,7 +28,7 @@ module.exports = function conf(config) {
   commonConfig.webpack.module.postLoaders = [
     {
       test: /\.jsx?$/,
-      include: /src\//,
+      include: [path.join(process.cwd(), './src')],
       loader: 'istanbul-instrumenter',
     },
   ];

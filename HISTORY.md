@@ -1,5 +1,9 @@
 # history
 
+## 0.2.33
+
+* `CHANGED` remove useless marker in `istanbul-instrumenter`
+
 ## 0.2.32
 
 * `CHANGED` add enzyme support

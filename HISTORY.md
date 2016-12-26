@@ -1,5 +1,9 @@
 # history
 
+## 0.2.24
+
+* `CHANGED` add support for `tinymce` & `rangy`
+
 ## 0.2.33
 
 * `CHANGED` remove useless marker in `istanbul-instrumenter`

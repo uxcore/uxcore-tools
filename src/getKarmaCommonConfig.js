@@ -10,6 +10,8 @@ module.exports = function () {
     require.resolve('console-polyfill/index.js'),
     require.resolve('es5-shim/es5-shim.js'),
     require.resolve('es5-shim/es5-sham.js'),
+    "https://g.alicdn.com/platform/c/rangy/1.3.0/rangy-core.min.js",
+    "https://g.alicdn.com/platform/c/tinymce/4.3.12/tinymce.min.js",
     indexSpec,
   ];
   // webpackCfg.entry = [];

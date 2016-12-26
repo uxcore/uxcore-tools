@@ -1,6 +1,6 @@
 # history
 
-## 0.2.24
+## 0.2.34
 
 * `CHANGED` add support for `tinymce` & `rangy`
 

@@ -1,5 +1,9 @@
 # history
 
+## 0.2.36
+
+* `FIXED` fix react version to 0.14.x
+
 ## 0.2.35
 
 * `FIXED` resolve.root config bug 

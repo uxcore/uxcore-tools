@@ -59,6 +59,9 @@ module.exports = {
                 test: /\.svg$/,
                 loader: 'svg2react',
                 include: [path.join(process.cwd(), './src')]
+            },
+            {
+                test: /\.json$/, loader: 'json'
             }
         ],
         postLoaders: [
@@ -72,7 +75,7 @@ module.exports = {
         root: [
             path.join(__dirname, '../node_modules')
         ],
-        extensions: ['', '.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx'],
+        extensions: ['', '.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx', '.json'],
     },
     resolveLoader: {
         root: [

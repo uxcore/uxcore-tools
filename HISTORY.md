@@ -1,5 +1,9 @@
 # history
 
+## 0.2.35
+
+* `FIXED` resolve.root config bug 
+
 ## 0.2.34
 
 * `CHANGED` add support for `tinymce` & `rangy`

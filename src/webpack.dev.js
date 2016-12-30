@@ -69,6 +69,9 @@ module.exports = {
         ],
     },
     resolve: {
+        root: [
+            path.join(__dirname, '../node_modules')
+        ],
         extensions: ['', '.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx'],
     },
     resolveLoader: {

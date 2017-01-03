@@ -3,8 +3,10 @@
 var getFromCwd = require('./util').getFromCwd;
 var assign = require('object-assign');
 var webpackCfg = require('./webpack.dev.js');
+var webpack = require('webpack');
+var happypack = require('happypack');
 
-module.exports = function () {
+module.exports = function (options) {
   var indexSpec = getFromCwd('tests/index.js');
   var files = [
     require.resolve('console-polyfill/index.js'),
@@ -17,6 +19,19 @@ module.exports = function () {
   // webpackCfg.entry = [];
   var preprocessors = {};
   preprocessors[indexSpec] = ['webpack', 'sourcemap'];
+  var webpackPlugins = [
+    new happypack({
+      id: 'js'
+    }),
+  ];
+
+  if (!options || options.disableSourceMap !== true) {
+    webpackPlugins.push(
+      new webpack.SourceMapDevToolPlugin({
+        columns: false,
+      })
+    );
+  }
   return {
     reporters: ['mocha'],
     client: {
@@ -34,6 +49,7 @@ module.exports = function () {
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': 'window',
       },
+      plugins: webpackPlugins
     }),
     webpackServer: {
       noInfo: true, //please don't spam the console when running in karma!

@@ -6,7 +6,7 @@ var assign = require('object-assign');
 var path = require('path');
 
 module.exports = function conf(config) {
-  var commonConfig = getKarmaCommonConfig();
+  var commonConfig = getKarmaCommonConfig({disableSourceMap: true});
   var preprocessors = {};
   preprocessors[commonConfig.files[commonConfig.files.length - 1]] = 'webpack'; // remove sourcemap
   var reporters = ['progress', 'coverage'];

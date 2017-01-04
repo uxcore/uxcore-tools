@@ -69,7 +69,8 @@ module.exports = function(config) {
         },
         customLaunchers: customLaunchers,
         browsers: Object.keys(customLaunchers),
-        reporters: ['mocha', 'saucelabs'],
+        reporters: ['dots', 'saucelabs'],
+        recordScreenshots: true,
         singleRun: true,
         concurrency: 4,
     }));

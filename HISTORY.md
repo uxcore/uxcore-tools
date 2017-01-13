@@ -1,6 +1,6 @@
 # history
 
-## 0.2.37
+## 0.2.39
 
 * `FIXED` use sinon@1.x to support IE9/10 tests.
 

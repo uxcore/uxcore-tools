@@ -1,5 +1,9 @@
 # history
 
+## 0.2.37
+
+* `FIXED` use sinon@1.x to support IE9/10 tests.
+
 ## 0.2.36
 
 * `FIXED` fix react version to 0.14.x

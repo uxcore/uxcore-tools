@@ -12,6 +12,7 @@ module.exports = function (options) {
     require.resolve('console-polyfill/index.js'),
     require.resolve('es5-shim/es5-shim.js'),
     require.resolve('es5-shim/es5-sham.js'),
+    require.resolve('sinon/pkg/sinon.js'),
     "https://g.alicdn.com/platform/c/rangy/1.3.0/rangy-core.min.js",
     "https://g.alicdn.com/platform/c/tinymce/4.3.12/tinymce.min.js",
     indexSpec,
@@ -45,6 +46,7 @@ module.exports = function (options) {
     preprocessors: preprocessors,
     webpack: assign(webpackCfg, {
       externals: {
+        'sinon': 'var sinon',
         'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': 'window',

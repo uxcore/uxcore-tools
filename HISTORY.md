@@ -1,5 +1,9 @@
 # history
 
+## 0.2.40
+
+* `CHANGED` autoprefix config 
+
 ## 0.2.39
 
 * `FIXED` use sinon@1.x to support IE9/10 tests.

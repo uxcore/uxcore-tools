@@ -45,7 +45,7 @@ colors.setTheme({
 });
 
 var autoprefix = new lessPluginAutoPrefix({
-    browsers: ['last 2 versions', 'not ie < 8']
+    browsers: ['last 2 versions', 'IE >= 8']
 });
 
 gulp.task('pack_build', function(cb) {

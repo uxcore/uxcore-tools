@@ -1,6 +1,6 @@
 {
   "name": "uxcore-tools",
-  "version": "0.2.40",
+  "version": "0.2.41",
   "description": "development tools for uxcore",
   "main": "index.js",
   "scripts": {},
@@ -25,6 +25,7 @@
     "connect-livereload": "~0.5.4",
     "console-polyfill": "^0.2.2",
     "cross-spawn": "~4.0.0",
+    "electron-prebuilt": "^1.4.13",
     "es3ify-loader": "^0.2.0",
     "es5-shim": "^4.5.8",
     "eslint": "~2.11.0",
@@ -53,6 +54,7 @@
     "karma-chrome-launcher": "~1.0.1",
     "karma-coverage": "~1.0.0",
     "karma-coveralls": "~1.1.2",
+    "karma-electron-launcher": "^0.1.0",
     "karma-firefox-launcher": "~1.0.0",
     "karma-ie-launcher": "~1.0.0",
     "karma-mocha": "^1.0.1",

@@ -77,6 +77,9 @@ gulp.task('less_demo', function(cb) {
         .pipe(sourcemaps.init())
         .pipe(less({
             plugins: [autoprefix]
+        }).on('error', function(error) {
+            console.log(error);
+            this.emit('end');
         }))
         .pipe(concat('demo.css'))
         .pipe(replace([{
@@ -118,7 +121,7 @@ gulp.task('reload_by_demo_css', ['less_demo'], function () {
 
 gulp.task('test', function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
-    var karmaConfig = path.join(__dirname, './karma.phantomjs.conf.js');
+    var karmaConfig = path.join(__dirname, './karma.electron.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });

@@ -1,5 +1,9 @@
 # history
 
+## 0.2.41
+
+* `CHANGED` use `electron` instead of `phantomjs`
+
 ## 0.2.40
 
 * `CHANGED` autoprefix config 

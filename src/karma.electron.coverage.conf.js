@@ -33,16 +33,11 @@ module.exports = function conf(config) {
     },
   ];
   config.set(assign(commonConfig, {
-    preprocessors: preprocessors,
+    preprocessors,
     webpack: commonConfig.webpack,
-    reporters: reporters,
-    coverageReporter: coverageReporter,
-    browsers: ['PhantomJS'],
+    reporters,
+    coverageReporter,
+    browsers: ['Electron'],
     singleRun: true,
-    phantomjsLauncher: {
-      // Have phantomjs exit if a ResourceError is encountered
-      // (useful if karma exits without killing phantom)
-      exitOnResourceError: true,
-    },
   }));
 };

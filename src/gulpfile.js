@@ -121,12 +121,19 @@ gulp.task('reload_by_demo_css', ['less_demo'], function () {
 
 gulp.task('test', function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
+    var karmaConfig = path.join(__dirname, './karma.phantomjs.conf.js');
+    var args = [karmaBin, 'start', karmaConfig];
+    util.runCmd('node', args, done);
+});
+
+gulp.task('electron', function(done) {
+    var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.electron.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
 
-gulp.task('coverage', (done) => {
+gulp.task('coverage', function(done) {
     if (fs.existsSync(util.getFromCwd('coverage'))) {
         shelljs.rm('-rf', util.getFromCwd('coverage'));
     }
@@ -136,22 +143,32 @@ gulp.task('coverage', (done) => {
     util.runCmd('node', args, done);
 });
 
+gulp.task('electron-coverage', function(done) {
+    if (fs.existsSync(util.getFromCwd('coverage'))) {
+        shelljs.rm('-rf', util.getFromCwd('coverage'));
+    }
+    var karmaBin = require.resolve('karma/bin/karma');
+    var karmaConfig = path.join(__dirname, './karma.electron.coverage.conf.js');
+    var args = [karmaBin, 'start', karmaConfig];
+    util.runCmd('node', args, done);
+});
+
 // run your unit tests across many browsers and platforms on Sauce Labs
-gulp.task('saucelabs', (done) => {
+gulp.task('saucelabs', function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.saucelabs.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
 
-gulp.task('browsers', (done) => {
+gulp.task('browsers', function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.browsers.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
 
-gulp.task('chrome', (done) => {
+gulp.task('chrome', function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.chrome.conf.js');
     var args = [karmaBin, 'start', karmaConfig];

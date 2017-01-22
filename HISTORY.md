@@ -1,5 +1,9 @@
 # history
 
+## 0.2.42
+
+* `CHANGED` default test is `phantomjs`, `electron` is prefered.
+
 ## 0.2.41
 
 * `CHANGED` use `electron` instead of `phantomjs`

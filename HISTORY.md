@@ -1,5 +1,9 @@
 # history
 
+## 0.2.43
+
+* `CHANGED` imporve task `dep` & `update`, reduce error happening
+
 ## 0.2.42
 
 * `CHANGED` default test is `phantomjs`, `electron` is prefered.

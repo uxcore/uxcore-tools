@@ -247,30 +247,33 @@ gulp.task('start', ['server']);
 
 gulp.task('dep', function() {
     var commands = util.getPackages();
-    commands.forEach(function(item) {
-        util.runCmd('npm', ['i', '-d', item]);
-    });
+    util.runCmd('npm', ['i', '-d'].concat(commands));
 });
 
 gulp.task('update', function() {
     var commands = util.getPackages();
-    commands.forEach(function(item) {
-        util.runCmd('npm', ['update', '-d', item]);
-    });
+    util.runCmd('npm', ['update', '-d'].concat(commands));
 });
 
 gulp.task('tnpm-dep', function() {
     var commands = util.getPackages();
-    commands.forEach(function(item) {
-        util.runCmd('tnpm', ['i', '-d', item]);
-    });
+    util.runCmd('tnpm', ['i', '-d'].concat(commands));
 });
 
 gulp.task('tnpm-update', function() {
     var commands = util.getPackages();
-    commands.forEach(function(item) {
-        util.runCmd('tnpm', ['update', '-d', item]);
-    });
+    console.log('getting tnpm version...')
+    util.runCmd('tnpm', ['-v'], function () { }, function (data) {
+        var tnpmVersion = data.match(/tnpm@(\d)/);
+        if (parseInt(tnpmVersion[1], 10) === 4) {
+            util.runCmd('rm', ['-rf', 'node_modules/'], function () {
+                console.log('install dependencies...')
+                util.runCmd('npm', ['run', 'tnpm-dep']);
+            });
+        } else {
+            util.runCmd('tnpm', ['update', '-d'].concat(commands));
+        }
+    })
 });
 
 gulp.task('pub', ['pack_build'], function() {

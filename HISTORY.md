@@ -1,5 +1,9 @@
 # history
 
+## 0.2.44
+
+* `FIXED` task `update` fails to update dependencies to latest.
+
 ## 0.2.43
 
 * `CHANGED` imporve task `dep` & `update`, reduce error happening

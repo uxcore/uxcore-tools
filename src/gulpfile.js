@@ -252,7 +252,9 @@ gulp.task('dep', function() {
 
 gulp.task('update', function() {
     var commands = util.getPackages();
-    util.runCmd('npm', ['update', '-d'].concat(commands));
+    util.runCmd('npm', ['update', '-d'].concat(commands.map(function(item) {
+        return item.split('@')[0];
+    })));
 });
 
 gulp.task('tnpm-dep', function() {

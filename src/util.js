@@ -32,6 +32,7 @@ var utils = {
         var runner = require('child_process').spawn(cmd, args, {
             // keep color
             stdio: stdoutFn ? 'pipe' : 'inherit',
+            shell: true,
         });
         if (stdoutFn) {
             runner.stdout.on('data', function (data) {

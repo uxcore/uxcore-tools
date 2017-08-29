@@ -1,5 +1,9 @@
 # history
 
+## 0.2.45
+
+* `CHANGED` set shell flag in spawn to be compatible with Windows
+
 ## 0.2.44
 
 * `FIXED` task `update` fails to update dependencies to latest.

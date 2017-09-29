@@ -37,11 +37,6 @@ module.exports = function(config) {
             browserName: 'internet explorer',
             version: '9',
         },
-        sl_ie_8: {
-            base: 'SauceLabs',
-            browserName: 'internet explorer',
-            version: '8',
-        },
     };
 
     // Use ENV vars on Travis and sauce.json locally to get credentials

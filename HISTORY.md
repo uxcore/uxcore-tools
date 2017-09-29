@@ -1,5 +1,9 @@
 # history
 
+## 0.2.46
+
+* `CHANGED` remove IE8 browser test
+
 ## 0.2.45
 
 * `CHANGED` set shell flag in spawn to be compatible with Windows

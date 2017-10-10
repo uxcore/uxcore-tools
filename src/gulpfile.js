@@ -247,7 +247,7 @@ gulp.task('start', ['server']);
 
 gulp.task('dep', function() {
     var commands = util.getPackages();
-    util.runCmd('npm', ['i', '-d'].concat(commands));
+    util.runCmd('npm', ['i', '-d', '--no-save'].concat(commands));
 });
 
 gulp.task('update', function() {
@@ -259,7 +259,7 @@ gulp.task('update', function() {
 
 gulp.task('tnpm-dep', function() {
     var commands = util.getPackages();
-    util.runCmd('tnpm', ['i', '-d'].concat(commands));
+    util.runCmd('tnpm', ['i', '-d', '--no-save'].concat(commands));
 });
 
 gulp.task('tnpm-update', function() {

@@ -1,5 +1,9 @@
 # history
 
+## 0.2.47
+
+* `FIXED` npm@5 will auto save dependencies when installing specific package 
+
 ## 0.2.46
 
 * `CHANGED` remove IE8 browser test

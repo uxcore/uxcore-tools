@@ -23,6 +23,7 @@ var gulp = require('gulp');
 var babel = require('gulp-babel');
 var less = require('gulp-less');
 var lessPluginAutoPrefix = require('less-plugin-autoprefix');
+var LessPluginFunctions = require('less-plugin-functions');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var replace = require('gulp-just-replace');
@@ -76,7 +77,7 @@ gulp.task('less_demo', function(cb) {
     gulp.src([path.join(process.cwd(), './demo/**/*.less')])
         .pipe(sourcemaps.init())
         .pipe(less({
-            plugins: [autoprefix]
+            plugins: [autoprefix, new LessPluginFunctions()]
         }).on('error', function(error) {
             console.log(error);
             this.emit('end');

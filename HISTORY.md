@@ -1,5 +1,9 @@
 # history
 
+## 0.2.48
+
+* `CHANGED` support less function
+
 ## 0.2.47
 
 * `FIXED` npm@5 will auto save dependencies when installing specific package 

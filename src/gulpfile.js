@@ -120,21 +120,21 @@ gulp.task('reload_by_demo_css', ['less_demo'], function () {
     lrServer.changed({body: {files: ['.']}});
 });
 
-gulp.task('test', function(done) {
+gulp.task('test', ['less_demo'], function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.phantomjs.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
 
-gulp.task('electron', function(done) {
+gulp.task('electron', ['less_demo'], function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.electron.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
 
-gulp.task('coverage', function(done) {
+gulp.task('coverage', ['less_demo'], function(done) {
     if (fs.existsSync(util.getFromCwd('coverage'))) {
         shelljs.rm('-rf', util.getFromCwd('coverage'));
     }
@@ -144,7 +144,7 @@ gulp.task('coverage', function(done) {
     util.runCmd('node', args, done);
 });
 
-gulp.task('electron-coverage', function(done) {
+gulp.task('electron-coverage', ['less_demo'], function(done) {
     if (fs.existsSync(util.getFromCwd('coverage'))) {
         shelljs.rm('-rf', util.getFromCwd('coverage'));
     }
@@ -155,21 +155,21 @@ gulp.task('electron-coverage', function(done) {
 });
 
 // run your unit tests across many browsers and platforms on Sauce Labs
-gulp.task('saucelabs', function(done) {
+gulp.task('saucelabs', ['less_demo'], function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.saucelabs.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
 
-gulp.task('browsers', function(done) {
+gulp.task('browsers', ['less_demo'], function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.browsers.conf.js');
     var args = [karmaBin, 'start', karmaConfig];
     util.runCmd('node', args, done);
 });
 
-gulp.task('chrome', function(done) {
+gulp.task('chrome', ['less_demo'], function(done) {
     var karmaBin = require.resolve('karma/bin/karma');
     var karmaConfig = path.join(__dirname, './karma.chrome.conf.js');
     var args = [karmaBin, 'start', karmaConfig];

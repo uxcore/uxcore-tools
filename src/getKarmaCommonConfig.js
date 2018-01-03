@@ -9,6 +9,8 @@ var happypack = require('happypack');
 module.exports = function (options) {
   var indexSpec = getFromCwd('tests/index.js');
   var files = [
+    getFromCwd('node_modules/uxcore-kuma/dist/orange.css'),
+    getFromCwd('dist/demo.css'),
     require.resolve('console-polyfill/index.js'),
     require.resolve('es5-shim/es5-shim.js'),
     require.resolve('es5-shim/es5-sham.js'),

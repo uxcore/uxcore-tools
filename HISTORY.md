@@ -1,5 +1,10 @@
 # history
 
+
+## 0.2.49
+
+* `CHANGED` add css files in test
+
 ## 0.2.48
 
 * `CHANGED` support less function

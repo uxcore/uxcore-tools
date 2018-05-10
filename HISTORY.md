@@ -1,6 +1,15 @@
 # history
 
 
+
+## 0.2.51
+
+* `CHANGED` import babel-plugin-import default
+
+## 0.2.50
+
+* `CHANGED` support less import & less transfer
+
 ## 0.2.49
 
 * `CHANGED` add css files in test

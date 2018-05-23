@@ -1,6 +1,13 @@
 # history
 
+## 0.2.53
 
+* `CHANGED` improve package string indent
+
+## 0.2.52
+
+
+* `CHANEGD` use semver to compare package version
 
 ## 0.2.51
 

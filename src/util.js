@@ -5,27 +5,13 @@ var eslintCfg = JSON.parse(file.readFileAsString(__dirname + '/eslintrc.json'));
 var userLintCfg;
 var Promise = require('promise');
 var git = require('git-rev');
+var semver = require('semver');
 
 try {
     userLintCfg = JSON.parse(file.readFileAsString(path.join(process.cwd(), './.eslintrc.json')));
 } catch (e) { }
 
 var utils = {
-    versionCompare: function (a, b) {
-        var aArr = a.split('.');
-        var bArr = b.split('.');
-        var larger = false;
-        for (var i = 0; i < 3; i++) {
-            if (parseInt(aArr[i]) === parseInt(bArr[i])) {
-
-            }
-            else {
-                larger = parseInt(aArr[i]) > parseInt(bArr[i]);
-                break;
-            }
-        }
-        return larger;
-    },
     runCmd: function (cmd, args, fn, stdoutFn) {
         console.log('Run CMD: ' + cmd + ' ' + args.join(' '));
         args = args || [];
@@ -82,17 +68,13 @@ var utils = {
                         message: 'please enter the package version to publish (should be xx.xx.xx)',
                         default: pkg.version,
                         validate: function (input) {
-                            if (/\d+\.\d+\.\d+/.test(input)) {
-                                if (me.versionCompare(input, pkg.version)) {
+                            if (semver.valid(input)) {
+                                if (semver.gt(input, pkg.version)) {
                                     return true;
                                 }
-                                else {
-                                    return "the version you entered should be larger than now"
-                                }
+                                return 'the version you entered should be larger than now';
                             }
-                            else {
-                                return "the version you entered is not valid"
-                            }
+                            return 'the version you entered is not valid';
                         }
                     },
                     {

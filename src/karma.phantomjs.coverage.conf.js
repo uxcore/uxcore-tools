@@ -25,13 +25,14 @@ module.exports = function conf(config) {
   if (process.env.TRAVIS_JOB_ID) {
     reporters = ['coverage', 'coveralls'];
   }
-  commonConfig.webpack.module.postLoaders = [
+  commonConfig.webpack.module.rules.push(
     {
       test: /\.jsx?$/,
       include: [path.join(process.cwd(), './src')],
-      loader: 'istanbul-instrumenter',
-    },
-  ];
+      loader: 'istanbul-instrumenter-loader',
+      enforce: 'post'
+    }
+  );
   config.set(assign(commonConfig, {
     preprocessors: preprocessors,
     webpack: commonConfig.webpack,

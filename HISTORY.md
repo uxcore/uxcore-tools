@@ -1,5 +1,9 @@
 # history
 
+## 0.3.0
+
+* `CHANGED` update webpack to `3.x`
+
 ## 0.2.53
 
 * `CHANGED` improve package string indent

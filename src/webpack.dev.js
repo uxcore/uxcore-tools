@@ -3,10 +3,11 @@ var webpack = require('webpack');
 var path = require('path');
 var happypack = require('happypack');
 var ProgressBarPlugin = require('progress-bar-webpack-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 
 function getLoaderExclude(path) {
   var isNpmModule = !!path.match(/node_modules/);
-  console.log(isNpmModule);
   return isNpmModule;
 }
 
@@ -21,36 +22,18 @@ module.exports = {
     sourceMapFilename: "[name].js.map"
   },
   module: {
-    loaders: [
+    rules: [
       {
 
         test: /\.js(x)*$/,
         // npm modules 都不需要经过babel解析
         // exclude: getLoaderExclude,
         include: [path.join(process.cwd(), './src'), path.join(process.cwd(), './demo'), path.join(process.cwd(), './test')],
-        loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015-ie', 'stage-1'].map(function (item) {
-            return require.resolve('babel-preset-' + item);
-          }),
-          plugins: [
-            'transform-es3-member-expression-literals',
-            'transform-es3-property-literals',
-            'add-module-exports',
-            ["import", { libraryName: "uxcore", camel2DashComponentName: false }]
-          ].map(function (item) {
-            if (Array.isArray(item)) {
-              return [require.resolve('babel-plugin-' + item[0]), item[1]]
-            }
-            return require.resolve('babel-plugin-' + item);
-          }),
-          cacheDirectory: true
-        },
-        happy: { id: 'js' }
+        use: 'happypack/loader',
       },
       {
         test: /\.svg$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         include: [path.join(process.cwd(), './src')],
         query: {
           presets: ['react', 'es2015-ie'].map(function (item) {
@@ -61,34 +44,39 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'svg2react',
+        loader: 'svg2react-loader',
         include: [path.join(process.cwd(), './src')]
       },
       {
-        test: /\.json$/, loader: 'json'
-      },
-      {
         test: /\.less$/,
-        loader: 'style-loader!css-loader?sourceMap!less-loader',
+        use: [
+          'style-loader',
+          'css-loader',
+          'less-loader',
+        ],
       },
-    ],
-    postLoaders: [
       {
         test: /\.js(x)*$/,
-        loader: 'es3ify',
+        loader: 'es3ify-loader',
+        enforce: 'post',
       }
     ],
   },
   resolve: {
-    root: [
-      path.join(__dirname, '../node_modules')
+    modules: [
+      path.resolve(__dirname, '../node_modules'),
+      path.resolve(__dirname, '../../'),
+      process.cwd(),
+      'node_modules',
     ],
-    extensions: ['', '.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx', '.json'],
+    extensions: ['.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx', '.json'],
+    mainFields: ['main'],
   },
   resolveLoader: {
-    root: [
-      path.join(__dirname, '../node_modules')
-    ]
+    modules: [
+      path.resolve(__dirname, '../node_modules'),
+      path.resolve(__dirname, '../../'),
+    ],
   },
   externals: {
     react: 'var React', // 相当于把全局的React作为模块的返回 module.exports = React;
@@ -99,9 +87,32 @@ module.exports = {
     new webpack.SourceMapDevToolPlugin({
       columns: false,
     }),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh|en/),
     new happypack({
-      id: 'js'
+      loaders: [
+        {
+          loader: 'babel-loader',
+          query: {
+            presets: ['react', 'es2015-ie', 'stage-1'].map(function (item) {
+              return require.resolve('babel-preset-' + item);
+            }),
+            plugins: [
+              'transform-es3-member-expression-literals',
+              'transform-es3-property-literals',
+              'add-module-exports',
+              ["import", { libraryName: "uxcore", camel2DashComponentName: false }]
+            ].map(function (item) {
+              if (Array.isArray(item)) {
+                return [require.resolve('babel-plugin-' + item[0]), item[1]]
+              }
+              return require.resolve('babel-plugin-' + item);
+            }),
+            cacheDirectory: true
+          },
+        }
+      ]
     }),
-    // new ProgressBarPlugin()
+    // new DuplicatePackageCheckerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ]
 };

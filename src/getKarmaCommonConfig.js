@@ -23,8 +23,30 @@ module.exports = function (options) {
   var preprocessors = {};
   preprocessors[indexSpec] = ['webpack', 'sourcemap'];
   var webpackPlugins = [
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh|en/),
     new happypack({
-      id: 'js'
+      loaders: [
+        {
+          loader: 'babel-loader',
+          query: {
+            presets: ['react', 'es2015-ie', 'stage-1'].map(function (item) {
+              return require.resolve('babel-preset-' + item);
+            }),
+            plugins: [
+              'transform-es3-member-expression-literals',
+              'transform-es3-property-literals',
+              'add-module-exports',
+              ["import", { libraryName: "uxcore", camel2DashComponentName: false }]
+            ].map(function (item) {
+              if (Array.isArray(item)) {
+                return [require.resolve('babel-plugin-' + item[0]), item[1]]
+              }
+              return require.resolve('babel-plugin-' + item);
+            }),
+            cacheDirectory: true
+          },
+        }
+      ]
     }),
   ];
 

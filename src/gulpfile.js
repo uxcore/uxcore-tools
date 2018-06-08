@@ -57,7 +57,7 @@ gulp.task('pack_build', ['style_transfer'], function (cb) {
         return require.resolve('babel-preset-' + item);
       }),
       plugins: [
-        'add-module-exports', 
+        'add-module-exports',
         ["import", { libraryName: "uxcore", camel2DashComponentName: false }],
       ].map(function (item) {
         if (Array.isArray(item)) {
@@ -323,4 +323,59 @@ gulp.task('doc', function () {
     .catch(function (err) {
       console.error(err);
     });
+});
+
+gulp.task('upgrade16', function () {
+  // process package.json
+  var pkgPath = path.join(process.cwd(), './package.json');
+  var pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+  delete pkg.devDependencies['es5-shim'];
+  delete pkg.devDependencies['enzyme-adapter-react-15'];
+  delete pkg.devDependencies['react-addons-test-utils'];
+  pkg.devDependencies = assign({}, pkg.devDependencies, {
+    'babel-polyfill': '6.x',
+    react: '16.x',
+    'react-dom': '16.x',
+    'react-test-renderer': '16.x',
+    'enzyme-adapter-react-16': '1.x',
+    'uxcore-kuma': '*'
+  })
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, ' '));
+
+  // process index.html
+  var htmlPath = path.join(process.cwd(), './index.html');
+  var html = fs.readFileSync(htmlPath, 'utf-8');
+  html = html.replace('react/dist/react-with-addons.js', 'react/umd/react.development.js');
+  html = html.replace('react-dom/dist/react-dom.js', 'react-dom/umd/react-dom.development.js');
+  html = html.replace('react-dom/dist/react-dom.min.js', 'react-dom/umd/react-dom.development.js');
+  html = html.replace('es5-shim/es5-shim.min.js', 'babel-polyfill/dist/polyfill.min.js');
+  html = html.replace(/\<script src="\.\/node_modules\/es5-shim\/es5-sham.min.js"><\/script>[\r\n]+/, '');
+  fs.writeFileSync(htmlPath, html);
+
+  // process test file
+  try {
+    var testsPath = path.join(process.cwd(), './tests');
+    var tests = fs.readdirSync(testsPath);
+    tests.forEach((fileName) => {
+      if (fileName.indexOf('spec') !== -1) {
+        var testPath = `${testsPath}/${fileName}`;
+        var test = fs.readFileSync(testPath, 'utf-8');
+        test = test.replace('enzyme-adapter-react-15', 'enzyme-adapter-react-16');
+        fs.writeFileSync(testPath, test);
+      }
+    })
+  } catch(e) {
+    console.log(e);
+  }
+
+  // process gitignore
+  var gitignorePath = path.join(process.cwd(), './.gitignore');;
+  var gitignore = fs.readFileSync(gitignorePath, 'utf-8');
+  ['coverage', 'package-lock.json'].forEach((key) => {
+    spawn.sync('git', ['rm', '-rf', key], { stdio: 'inherit' });
+    if (gitignore.indexOf(key) === -1) {
+      gitignore += key + '\r\n';
+    }
+  })
+  fs.writeFileSync(gitignorePath, gitignore);
 });

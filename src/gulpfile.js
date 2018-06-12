@@ -338,8 +338,10 @@ gulp.task('upgrade16', function () {
     'react-dom': '16.x',
     'react-test-renderer': '16.x',
     'enzyme-adapter-react-16': '1.x',
-    'uxcore-kuma': '*'
-  })
+    'uxcore-kuma': '*',
+    'uxcore-tools': '^0.3.0'
+  });
+
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, ' '));
 
   // process index.html

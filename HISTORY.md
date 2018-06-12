@@ -1,5 +1,9 @@
 # history
 
+## 0.3.1
+
+* `CHANGED` prepared for upgrade16
+
 ## 0.3.0
 
 * `CHANGED` update webpack to `3.x`

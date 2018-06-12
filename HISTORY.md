@@ -1,5 +1,9 @@
 # history
 
+## 0.3.3
+
+* `FIXED` fix util circular dependency
+
 ## 0.3.1
 
 * `CHANGED` prepared for upgrade16

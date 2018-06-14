@@ -71,6 +71,9 @@ module.exports = {
     ],
     extensions: ['.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx', '.json'],
     mainFields: ['main'],
+    alias: {
+      inherits: path.resolve(__dirname, '../../inherits/inherits_browser.js'),
+    }
   },
   resolveLoader: {
     modules: [

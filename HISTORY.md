@@ -1,5 +1,9 @@
 # history
 
+## 0.3.5
+
+* `FIXED` fix util & inherits circular dependency
+
 ## 0.3.3
 
 * `FIXED` fix util circular dependency

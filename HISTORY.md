@@ -1,5 +1,17 @@
 # history
 
+## 0.3.5
+
+* `FIXED` fix util & inherits circular dependency
+
+## 0.3.3
+
+* `FIXED` fix util circular dependency
+
+## 0.3.1
+
+* `CHANGED` prepared for upgrade16
+
 ## 0.3.0
 
 * `CHANGED` update webpack to `3.x`

@@ -27,3 +27,4 @@ dist
 build
 assets/**/*.css
 .vscode
+package-lock.json

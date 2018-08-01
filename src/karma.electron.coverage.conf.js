@@ -1,16 +1,14 @@
-'use strict';
-
-var getFromCwd = require('./util').getFromCwd;
-var getKarmaCommonConfig = require('./getKarmaCommonConfig');
-var assign = require('object-assign');
-var path = require('path');
+const assign = require('object-assign');
+const path = require('path');
+const { getFromCwd } = require('./util');
+const getKarmaCommonConfig = require('./getKarmaCommonConfig');
 
 module.exports = function conf(config) {
-  var commonConfig = getKarmaCommonConfig({disableSourceMap: true});
-  var preprocessors = {};
+  const commonConfig = getKarmaCommonConfig({ disableSourceMap: true });
+  const preprocessors = {};
   preprocessors[commonConfig.files[commonConfig.files.length - 1]] = 'webpack'; // remove sourcemap
-  var reporters = ['progress', 'coverage'];
-  var coverageReporter = {
+  let reporters = ['progress', 'coverage'];
+  const coverageReporter = {
     reporters: [
       {
         type: 'lcov',
@@ -30,8 +28,8 @@ module.exports = function conf(config) {
       test: /\.jsx?$/,
       include: [path.join(process.cwd(), './src')],
       loader: 'istanbul-instrumenter-loader',
-      enforce: 'post'
-    }
+      enforce: 'post',
+    },
   );
   config.set(assign(commonConfig, {
     preprocessors,

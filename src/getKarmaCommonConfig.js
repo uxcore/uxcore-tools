@@ -1,51 +1,49 @@
-'use strict';
 
-var getFromCwd = require('./util').getFromCwd;
-var assign = require('object-assign');
-var webpackCfg = require('./webpack.dev.js');
-var webpack = require('webpack');
-var happypack = require('happypack');
 
-module.exports = function (options) {
-  var indexSpec = getFromCwd('tests/index.js');
-  var files = [
+const assign = require('object-assign');
+const webpack = require('webpack');
+const Happypack = require('happypack');
+const webpackCfg = require('./webpack.dev.js');
+const { getFromCwd } = require('./util');
+
+module.exports = (options) => {
+  const indexSpec = getFromCwd('tests/index.js');
+  const files = [
     getFromCwd('node_modules/uxcore-kuma/dist/orange.css'),
     getFromCwd('dist/demo.css'),
     require.resolve('console-polyfill/index.js'),
     require.resolve('babel-polyfill/dist/polyfill.min.js'),
     require.resolve('sinon/pkg/sinon.js'),
-    "https://g.alicdn.com/platform/c/rangy/1.3.0/rangy-core.min.js",
-    "https://g.alicdn.com/platform/c/tinymce/4.3.12/tinymce.min.js",
+    'https://g.alicdn.com/platform/c/rangy/1.3.0/rangy-core.min.js',
+    'https://g.alicdn.com/platform/c/tinymce/4.3.12/tinymce.min.js',
     indexSpec,
   ];
   // webpackCfg.entry = [];
-  var preprocessors = {};
+  const preprocessors = {};
   preprocessors[indexSpec] = ['webpack', 'sourcemap'];
-  var webpackPlugins = [
+  const webpackPlugins = [
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh|en/),
-    new happypack({
+    new Happypack({
       loaders: [
         {
           loader: 'babel-loader',
           query: {
-            presets: ['react', 'es2015-ie', 'stage-1'].map(function (item) {
-              return require.resolve('babel-preset-' + item);
-            }),
+            presets: ['react', 'es2015-ie', 'stage-1'].map(item => require.resolve(`babel-preset-${item}`)),
             plugins: [
               'transform-es3-member-expression-literals',
               'transform-es3-property-literals',
               'add-module-exports',
-              ["import", { libraryName: "uxcore", camel2DashComponentName: false }]
-            ].map(function (item) {
+              ['import', { libraryName: 'uxcore', camel2DashComponentName: false }],
+            ].map((item) => {
               if (Array.isArray(item)) {
-                return [require.resolve('babel-plugin-' + item[0]), item[1]]
+                return [require.resolve(`babel-plugin-${item[0]}`), item[1]];
               }
-              return require.resolve('babel-plugin-' + item);
+              return require.resolve(`babel-plugin-${item}`);
             }),
-            cacheDirectory: true
+            cacheDirectory: true,
           },
-        }
-      ]
+        },
+      ],
     }),
   ];
 
@@ -53,7 +51,7 @@ module.exports = function (options) {
     webpackPlugins.push(
       new webpack.SourceMapDevToolPlugin({
         columns: false,
-      })
+      }),
     );
   }
   return {
@@ -65,19 +63,19 @@ module.exports = function (options) {
       },
     },
     frameworks: ['mocha'],
-    files: files,
-    preprocessors: preprocessors,
+    files,
+    preprocessors,
     webpack: assign(webpackCfg, {
       externals: {
-        'sinon': 'var sinon',
+        sinon: 'var sinon',
         'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': 'window',
       },
-      plugins: webpackPlugins
+      plugins: webpackPlugins,
     }),
     webpackServer: {
-      noInfo: true, //please don't spam the console when running in karma!
+      noInfo: true, // please don't spam the console when running in karma!
     },
   };
 };

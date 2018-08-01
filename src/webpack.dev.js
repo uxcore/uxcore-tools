@@ -1,25 +1,19 @@
-var fs = require('fs');
-var webpack = require('webpack');
-var path = require('path');
-var happypack = require('happypack');
-var ProgressBarPlugin = require('progress-bar-webpack-plugin');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
-
-function getLoaderExclude(path) {
-  var isNpmModule = !!path.match(/node_modules/);
-  return isNpmModule;
-}
+const webpack = require('webpack');
+const path = require('path');
+const Happypack = require('happypack');
+// const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin');
 
 module.exports = {
   cache: true,
   entry: {
-    demo: './demo/index'
+    demo: './demo/index',
   },
   output: {
     path: path.join(process.cwd(), './dist'),
-    filename: "[name].js",
-    sourceMapFilename: "[name].js.map"
+    filename: '[name].js',
+    sourceMapFilename: '[name].js.map',
   },
   module: {
     rules: [
@@ -36,16 +30,14 @@ module.exports = {
         loader: 'babel-loader',
         include: [path.join(process.cwd(), './src')],
         query: {
-          presets: ['react', 'es2015-ie'].map(function (item) {
-            return require.resolve('babel-preset-' + item);
-          }),
-          cacheDirectory: true
-        }
+          presets: ['react', 'es2015-ie'].map(item => require.resolve(`babel-preset-${item}`)),
+          cacheDirectory: true,
+        },
       },
       {
         test: /\.svg$/,
         loader: 'svg2react-loader',
-        include: [path.join(process.cwd(), './src')]
+        include: [path.join(process.cwd(), './src')],
       },
       {
         test: /\.less$/,
@@ -56,10 +48,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.js(x)*$/,
+        test: /\.js(x)?$/,
         loader: 'es3ify-loader',
+        exclude: [path.join(process.cwd(), './style')],
         enforce: 'post',
-      }
+      },
     ],
   },
   resolve: {
@@ -72,8 +65,8 @@ module.exports = {
     extensions: ['.web.ts', '.web.tsx', '.web.js', '.web.jsx', '.ts', '.tsx', '.js', '.jsx', '.json'],
     mainFields: ['main'],
     alias: {
-      inherits: path.resolve(__dirname, '../../inherits/inherits_browser.js'),
-    }
+      inherits: 'inherits/inherits_browser.js',
+    },
   },
   resolveLoader: {
     modules: [
@@ -83,7 +76,7 @@ module.exports = {
   },
   externals: {
     react: 'var React', // 相当于把全局的React作为模块的返回 module.exports = React;
-    'react-dom': 'var ReactDOM'
+    'react-dom': 'var ReactDOM',
   },
   plugins: [
     // SourceMap plugin will define process.env.NODE_ENV as development
@@ -91,31 +84,29 @@ module.exports = {
       columns: false,
     }),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh|en/),
-    new happypack({
+    new Happypack({
       loaders: [
         {
           loader: 'babel-loader',
           query: {
-            presets: ['react', 'es2015-ie', 'stage-1'].map(function (item) {
-              return require.resolve('babel-preset-' + item);
-            }),
+            presets: ['react', 'es2015-ie', 'stage-1'].map(item => require.resolve(`babel-preset-${item}`)),
             plugins: [
               'transform-es3-member-expression-literals',
               'transform-es3-property-literals',
               'add-module-exports',
-              ["import", { libraryName: "uxcore", camel2DashComponentName: false }]
-            ].map(function (item) {
+              ['import', { libraryName: 'uxcore', camel2DashComponentName: false }],
+            ].map((item) => {
               if (Array.isArray(item)) {
-                return [require.resolve('babel-plugin-' + item[0]), item[1]]
+                return [require.resolve(`babel-plugin-${item[0]}`), item[1]];
               }
-              return require.resolve('babel-plugin-' + item);
+              return require.resolve(`babel-plugin-${item}`);
             }),
-            cacheDirectory: true
+            cacheDirectory: true,
           },
-        }
-      ]
+        },
+      ],
     }),
     // new DuplicatePackageCheckerPlugin(),
     // new BundleAnalyzerPlugin(),
-  ]
+  ],
 };

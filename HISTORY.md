@@ -1,5 +1,10 @@
 # history
 
+## 0.3.8
+
+* `CHANGED` `webpack.custom.js` can export a function.
+* `CHANGED` rewrite logic with es5, low version node support is deprecated.
+
 ## 0.3.5
 
 * `FIXED` fix util & inherits circular dependency

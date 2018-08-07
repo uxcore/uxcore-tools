@@ -48,11 +48,13 @@ module.exports = (options) => {
   ];
 
   if (!options || options.disableSourceMap !== true) {
+    /* eslint-disable comma-dangle */
     webpackPlugins.push(
       new webpack.SourceMapDevToolPlugin({
         columns: false,
-      }),
+      })
     );
+    /* eslint-enable comma-dangle */
   }
   return {
     reporters: ['mocha'],

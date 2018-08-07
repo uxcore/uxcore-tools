@@ -29,7 +29,7 @@ module.exports = function conf(config) {
       include: [path.join(process.cwd(), './src')],
       loader: 'istanbul-instrumenter-loader',
       enforce: 'post',
-    },
+    }
   );
   config.set(assign(commonConfig, {
     preprocessors,

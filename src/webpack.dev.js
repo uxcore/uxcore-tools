@@ -20,7 +20,7 @@ module.exports = {
       {
 
         test: /\.js(x)*$/,
-        // npm modules 都不需要经过babel解析
+        // npm modules 都不需要经过 babel 解析
         // exclude: getLoaderExclude,
         include: [path.join(process.cwd(), './src'), path.join(process.cwd(), './demo'), path.join(process.cwd(), './test')],
         use: 'happypack/loader',
@@ -50,7 +50,7 @@ module.exports = {
       {
         test: /\.js(x)?$/,
         loader: 'es3ify-loader',
-        exclude: [path.join(process.cwd(), './style')],
+        exclude: /style/,
         enforce: 'post',
       },
     ],

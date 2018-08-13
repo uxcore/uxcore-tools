@@ -48,6 +48,13 @@ module.exports = {
         ],
       },
       {
+        test: /\.(svg)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000
+        }
+      },
+      {
         test: /\.js(x)?$/,
         loader: 'es3ify-loader',
         exclude: /style/,

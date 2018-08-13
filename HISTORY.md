@@ -1,5 +1,9 @@
 # history
 
+## 0.3.9
+
+* `CHANGED` add url-loader
+
 ## 0.3.8
 
 * `CHANGED` `webpack.custom.js` can export a function.

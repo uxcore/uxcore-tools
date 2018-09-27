@@ -68,6 +68,7 @@ module.exports = (options) => {
     files,
     preprocessors,
     webpack: assign(webpackCfg, {
+      entry: null,
       externals: {
         sinon: 'var sinon',
         'react/addons': true,

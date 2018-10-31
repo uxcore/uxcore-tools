@@ -52,7 +52,7 @@ module.exports = {
         loader: 'url-loader',
         include: /kuma-base/,
         options: {
-          limit: 10000,
+          // limit: 100000,
         }
       },
       {

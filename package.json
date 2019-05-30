@@ -1,6 +1,6 @@
 {
   "name": "uxcore-tools",
-  "version": "0.3.15",
+  "version": "0.3.19",
   "description": "development tools for uxcore",
   "main": "index.js",
   "scripts": {},
@@ -43,7 +43,7 @@
     "gulp-babel": "^6.1.1",
     "gulp-concat": "^2.6.0",
     "gulp-es3ify": "0.0.0",
-    "gulp-eslint": "^2.0.0",
+    "gulp-eslint": "^4.0.0",
     "gulp-just-replace": "^1.0.2",
     "gulp-less": "^3.1.0",
     "gulp-sourcemaps": "^1.6.0",

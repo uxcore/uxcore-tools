@@ -251,16 +251,24 @@ gulp.task('server', [
     console.log(colors.info('livereload server start: listening on 35729'));
   });
 
-  // 开启调试服务
-  portscanner.findAPortNotInUse(3000, 3010, ip.address(), (error, port) => {
-    url = `http://${ip.address()}:${port}`;
+  const { PREVIEW_PORT, PREVIEW_URL } = process.env || {};
+
+  const serverRunner = (error, port) => {
+    url = PREVIEW_URL || `http://${ip.address()}:${port}`;
     app.listen(port, (err) => {
       console.log(colors.info(`dev server start: listening at ${url}`));
       if (err) {
         console.error(err);
       }
     });
-  });
+  };
+
+  // 开启调试服务
+  if (PREVIEW_PORT) {
+    serverRunner(null, PREVIEW_PORT);
+  } else {
+    portscanner.findAPortNotInUse(3000, 3010, ip.address(), serverRunner);
+  }
 
   gulp.watch(path.join(process.cwd(), './src/**/*.less'), ['reload_by_demo_css']);
 

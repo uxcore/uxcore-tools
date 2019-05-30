@@ -1,5 +1,9 @@
 # history
 
+## 0.3.16
+
+* `CHANGED` update gulp-eslint dep version
+
 ## 0.3.9
 
 * `CHANGED` add url-loader
